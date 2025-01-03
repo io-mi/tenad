@@ -1,7 +1,8 @@
 from __future__ import annotations
 from numpy.typing import NDArray
 import numpy as np
-from tensor import Tensor
+
+from tenad.tensor import Tensor
 
 
 def wrap(array:NDArray, *indices:int) -> tuple[int, ...]:

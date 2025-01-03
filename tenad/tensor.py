@@ -70,7 +70,7 @@ class BinaryOp(Operator):
 class NegOp(UnaryOp):
     def __init__(self, operand:Operand) -> None:
         UnaryOp.__init__(self, operand)
-        self.result = Tensor(-self.operand.data, not Tensor.no_grad.active, self)
+        self.result = Tensor(-self.operand.data, not Tensor.no_grad.enabled, self)
     
     @override
     def backprop(self, cotan:NDArray) -> None:
@@ -82,7 +82,7 @@ class AddOp(BinaryOp):
     def __init__(self, operand_l:Operand, operand_r:Operand) -> None:
         BinaryOp.__init__(self, operand_l, operand_r)
         self.result = Tensor(self.operand_l.data + self.operand_r.data, 
-                             not Tensor.no_grad.active, self)
+                             not Tensor.no_grad.enabled, self)
 
     @override
     def backprop(self, cotan:NDArray) -> None:
@@ -100,7 +100,7 @@ class SubOp(BinaryOp):
     def __init__(self, operand_l:Operand, operand_r:Operand) -> None:
         BinaryOp.__init__(self, operand_l, operand_r)
         self.result = Tensor(self.operand_l.data - self.operand_r.data, 
-                             not Tensor.no_grad.active, self)
+                             not Tensor.no_grad.enabled, self)
 
     @override
     def backprop(self, cotan:NDArray) -> None:
@@ -118,7 +118,7 @@ class MulOp(BinaryOp):
     def __init__(self, operand_l:Operand, operand_r:Operand) -> None:
         BinaryOp.__init__(self, operand_l, operand_r)
         self.result = Tensor(self.operand_l.data * self.operand_r.data, 
-                             not Tensor.no_grad.active, self)
+                             not Tensor.no_grad.enabled, self)
 
     @override
     def backprop(self, cotan:NDArray) -> None:
@@ -136,7 +136,7 @@ class DivOp(BinaryOp):
     def __init__(self, operand_l:Operand, operand_r:Operand) -> None:
         BinaryOp.__init__(self, operand_l, operand_r)
         self.result = Tensor(self.operand_l.data / self.operand_r.data, 
-                             not Tensor.no_grad.active, self)
+                             not Tensor.no_grad.enabled, self)
 
     @override
     def backprop(self, cotan:NDArray) -> None:
@@ -156,7 +156,7 @@ class MatMulOp(BinaryOp):
     def __init__(self, operand_l:Operand, operand_r:Operand) -> None:
         BinaryOp.__init__(self, operand_l, operand_r)
         self.result = Tensor(self.operand_l.data @ self.operand_r.data, 
-                             not Tensor.no_grad.active, self)
+                             not Tensor.no_grad.enabled, self)
 
     @override
     def backprop(self, cotan:NDArray) -> None:
@@ -176,7 +176,7 @@ class PowOp(BinaryOp):
     def __init__(self, operand_l:Operand, operand_r:Operand) -> None:
         BinaryOp.__init__(self, operand_l, operand_r)
         self.result = Tensor(self.operand_l.data ** self.operand_r.data, 
-                             not Tensor.no_grad.active, self)
+                             not Tensor.no_grad.enabled, self)
 
     @override
     def backprop(self, cotan:NDArray) -> None:
@@ -196,7 +196,7 @@ class MaximumOp(BinaryOp):
     def __init__(self, operand_l:Operand, operand_r:Operand) -> None:
         BinaryOp.__init__(self, operand_l, operand_r)
         self.result = Tensor(np.maximum(self.operand_l.data, self.operand_r.data), 
-                             not Tensor.no_grad.active, self)
+                             not Tensor.no_grad.enabled, self)
 
     @override
     def backprop(self, cotan:NDArray) -> None:
@@ -214,7 +214,7 @@ class MaximumOp(BinaryOp):
 class SquareOp(UnaryOp):
     def __init__(self, operand:Operand) -> None:
         UnaryOp.__init__(self, operand)
-        self.result = Tensor(np.square(self.operand.data), not Tensor.no_grad.active, self)
+        self.result = Tensor(np.square(self.operand.data), not Tensor.no_grad.enabled, self)
 
     @override
     def backprop(self, cotan:NDArray) -> None:
@@ -227,7 +227,7 @@ class SquareOp(UnaryOp):
 class LogOp(UnaryOp):
     def __init__(self, operand:Operand) -> None:
         UnaryOp.__init__(self, operand)
-        self.result = Tensor(np.log(self.operand.data), not Tensor.no_grad.active, self)
+        self.result = Tensor(np.log(self.operand.data), not Tensor.no_grad.enabled, self)
 
     @override
     def backprop(self, cotan:NDArray) -> None:
@@ -240,7 +240,7 @@ class LogOp(UnaryOp):
 class ExpOp(UnaryOp):
     def __init__(self, operand:Operand) -> None:
         UnaryOp.__init__(self, operand)
-        self.result = Tensor(np.exp(self.operand.data), not Tensor.no_grad.active, self)
+        self.result = Tensor(np.exp(self.operand.data), not Tensor.no_grad.enabled, self)
 
     @override
     def backprop(self, cotan:NDArray) -> None:
@@ -253,7 +253,7 @@ class ExpOp(UnaryOp):
 class SqrtOp(UnaryOp):
     def __init__(self, operand:Operand) -> None:
         UnaryOp.__init__(self, operand)
-        self.result = Tensor(np.sqrt(self.operand.data), not Tensor.no_grad.active, self)
+        self.result = Tensor(np.sqrt(self.operand.data), not Tensor.no_grad.enabled, self)
 
     @override
     def backprop(self, cotan:NDArray) -> None:
@@ -266,7 +266,7 @@ class SqrtOp(UnaryOp):
 class TanhOp(UnaryOp):
     def __init__(self, operand:Operand) -> None:
         UnaryOp.__init__(self, operand)
-        self.result = Tensor(np.tanh(self.operand.data), not Tensor.no_grad.active, self)
+        self.result = Tensor(np.tanh(self.operand.data), not Tensor.no_grad.enabled, self)
 
     @override
     def backprop(self, cotan:NDArray) -> None:
@@ -281,7 +281,7 @@ class SumOp(UnaryOp):
         UnaryOp.__init__(self, operand)
         self.result = Tensor(
             np.atleast_1d(np.sum(self.operand.data, axis=axes, keepdims=keepdims)),
-            not Tensor.no_grad.active, self
+            not Tensor.no_grad.enabled, self
         )
 
     @override
@@ -295,7 +295,7 @@ class SumOp(UnaryOp):
 class AbsOp(UnaryOp):
     def __init__(self, operand:Operand) -> None:
         UnaryOp.__init__(self, operand)
-        self.result = Tensor(np.abs(self.operand.data), not Tensor.no_grad.active, self)
+        self.result = Tensor(np.abs(self.operand.data), not Tensor.no_grad.enabled, self)
 
     @override
     def backprop(self, cotan:NDArray) -> None:
@@ -311,7 +311,7 @@ class MaxOp(UnaryOp):
         self._indices = _argmax(self.operand.data, axes)
         values = self.operand.data[*self._indices]
         if keepdims: values = np.expand_dims(values, axes)
-        self.result = Tensor(values, not Tensor.no_grad.active, self)
+        self.result = Tensor(values, not Tensor.no_grad.enabled, self)
 
     @override
     def backprop(self, cotan:NDArray) -> None:
@@ -329,7 +329,7 @@ class MeanOp(UnaryOp):
         self._axes = axes
         self.result = Tensor(
             np.atleast_1d(np.mean(self.operand.data, axis=axes, keepdims=keepdims)), 
-            not Tensor.no_grad.active, self
+            not Tensor.no_grad.enabled, self
         )
 
     @override
@@ -359,15 +359,21 @@ class TensorDataType:
 
 class TensorNoGrad:
     def __init__(self) -> None:
-        self.active = False
+        self.enabled = False
 
     def __enter__(self) -> None:
-        self.active = True
+        self.enabled = True
 
     def __exit__(self, exc_type, exc_value, exc_traceback) -> None:
-        self.active = False
+        self.enabled = False
+
+    def __bool__(self) -> bool:
+        return self.enabled
 
 
+# By defining attributes in the metaclass, you can control accessibility and 
+# ensure that certain attributes are accessible only through the class itself and 
+# not through its instances.
 class TensorMeta(type):
     dtype = TensorDataType(np.float32)
     no_grad = TensorNoGrad()
@@ -387,6 +393,15 @@ class Tensor(metaclass=TensorMeta):
     @staticmethod
     def ones(shape:Shape, use_grad:bool=True) -> Tensor:
         return Tensor(np.ones(shape, Tensor.dtype), use_grad)
+    
+    @staticmethod
+    def one_hot(classes:NDArray, num_classes:int=-1) -> Tensor:
+        if num_classes < 1:
+            num_classes = classes.max() + 1
+        idx = np.expand_dims(classes, axis=-1)
+        encoded = np.zeros(classes.shape + (num_classes,), dtype=Tensor.dtype)
+        np.put_along_axis(encoded, idx, 1.0, axis=-1)
+        return Tensor(encoded, False)
 
     def backprop(self) -> None:
         self.op.backprop(np.ones_like(self.data))
