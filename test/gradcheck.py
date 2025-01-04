@@ -25,7 +25,7 @@ class GradCheck:
 
     def log_entry(self, name:str, error:float) -> str:
         return "{0:<9} {1}".format(name, error)
-    
+
     def abs(self) -> str:
         v = Tensor(np.random.uniform(-1.0, 1.0, (36, 24)).astype(np.float64))
         v.abs().backprop()  
@@ -63,7 +63,7 @@ class GradCheck:
                     np.sqrt(np.sum(np.power(v.grad - v_grad, 2.0))) / 
                     np.sqrt(np.sum(np.power(v.grad + v_grad, 2.0)))
                 )
-                    
+
     def neg(self) -> str:
         v = Tensor(np.random.rand(40, 40).astype(np.float64))
         (-v).backprop()  
@@ -120,7 +120,7 @@ class GradCheck:
                     np.sqrt(np.sum(np.power(v.grad - v_grad, 2.0))) / 
                     np.sqrt(np.sum(np.power(v.grad + v_grad, 2.0)))
                 )
-    
+
     def exp(self) -> str:
         v = Tensor(np.random.rand(40, 40).astype(np.float64))
         v.exp().backprop()  
@@ -158,7 +158,7 @@ class GradCheck:
                     np.sqrt(np.sum(np.power(v.grad - v_grad, 2.0))) / 
                     np.sqrt(np.sum(np.power(v.grad + v_grad, 2.0)))
                 )
-    
+
     def tanh(self) -> str:
         v = Tensor(np.random.rand(40, 40).astype(np.float64))
         v.tanh().backprop()  
@@ -385,7 +385,7 @@ class GradCheck:
                     np.sqrt(np.sum(np.power(r.grad - r_grad, 2.0))) /
                     np.sqrt(np.sum(np.power(r.grad + r_grad, 2.0))))
                 ))
-    
+
     def pow(self) -> str:
         l = Tensor(np.random.rand(24, 1).astype(np.float64))
         r = Tensor(np.random.rand(1, 46).astype(np.float64))
@@ -454,7 +454,7 @@ class GradCheck:
                     np.sqrt(np.sum(np.power(r.grad - r_grad, 2.0))) /
                     np.sqrt(np.sum(np.power(r.grad + r_grad, 2.0))))
                 ))
-    
+
 
 
 

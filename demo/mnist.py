@@ -5,7 +5,7 @@ from numpy.typing import NDArray
 
 from tenad.tensor import Tensor
 from tenad.module import Module
-from tenad.layer import Linear, Bias1D
+from tenad.layer import Linear, BatchNorm1D, Bias1D
 from tenad.activation import ReLU, Softmax
 from tenad.criterion import CrossEntropyLoss
 from tenad.optimizer import StochasticGradientDescent
@@ -25,9 +25,11 @@ def load_idx(path:str) -> NDArray:
 class Model(Module):
     def __init__(self) -> None:
         self.l0 = Linear(784, 128)
+        self.n0 = BatchNorm1D(128)
         self.b0 = Bias1D(128)
         self.a0 = ReLU()
         self.l1 = Linear(128, 10)
+        self.n1 = BatchNorm1D(10)
         self.b1 = Bias1D(10)
         self.a1 = Softmax()
 
@@ -45,8 +47,8 @@ if __name__ == "__main__":
     train_y = load_idx("demo/data/mnist/train-labels-idx1-ubyte.gz")
 
     sample_count = train_y.shape[0]
-    epoch_count = 20
-    batch_size = 50
+    epoch_count = 10
+    batch_size = 100
     batch_count = sample_count / batch_size
 
     xs = train_x.astype(np.float32) / 255
@@ -81,12 +83,13 @@ if __name__ == "__main__":
         print("loss    : {:6.4f}".format(running_loss.data[0]))
     
 
-    test_x = load_idx("demo/data/mnist/t10k-images-idx3-ubyte.gz")
-    test_y = load_idx("demo/data/mnist/t10k-labels-idx1-ubyte.gz")
+    with model.evaluate:
+        test_x = load_idx("demo/data/mnist/t10k-images-idx3-ubyte.gz")
+        test_y = load_idx("demo/data/mnist/t10k-labels-idx1-ubyte.gz")
 
-    xs = Tensor(test_x.reshape((10000, 784)).astype(np.float32) / 255.0, False)
-    ps = model(xs)
+        xs = Tensor(test_x.reshape((10000, 784)).astype(np.float32) / 255.0, False)
+        ps = model(xs)
 
-    pred_y = np.argmax(ps.data, axis=1, keepdims=True)
-    accuracy = np.mean(pred_y == test_y.reshape((-1, 1)))
-    print("accuracy: {:6.4f}".format(accuracy))
+        pred_y = np.argmax(ps.data, axis=1, keepdims=True)
+        accuracy = np.mean(pred_y == test_y.reshape((-1, 1)))
+        print("accuracy: {:6.4f}".format(accuracy))

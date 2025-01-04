@@ -14,7 +14,7 @@ class Tanh(Module):
     @override
     def __call__(self, z:Tensor) -> Tensor:
         return z.tanh()
-    
+
 
 class Softmax(Module):
     @override

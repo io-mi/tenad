@@ -10,6 +10,21 @@ class Parameter(Tensor):
     pass
 
 
+class ModuleMode:
+    def __init__(self, module:Module) -> None:
+        self._module = module
+    
+    def __enter__(self) -> None:
+        self._module._training = True
+        for m in self._module.modules():
+            m._training = True
+    
+    def __exit__(self, exc_type, exc_value, exc_traceback) -> None:
+        self._module._training = False
+        for m in self._module.modules():
+            m._training = False
+
+
 class Module(ABC):
     #   Using __new__ to ensure that every Module subclass automatically gets 
     #   the _modules and _parameters dictionaries without requiring 
@@ -18,12 +33,14 @@ class Module(ABC):
         module = object.__new__(cls)
         module._modules = dict()
         module._parameters = dict()
+        module._training = True
         module.__init__(*args, **kwargs)
         return module
 
     def __init__(self) -> None:
         self._modules: dict[str, Module]
         self._parameters: dict[str, Parameter]
+        self._training: bool
 
     @abstractmethod
     def __call__(self, x:Tensor) -> Tensor:...
@@ -36,7 +53,7 @@ class Module(ABC):
     def zero_grad(self) -> None:
         for param in self.parameters():
             param.grad[:] = 0
-    
+
     def modules(self) -> Iterator[Module]:
         for module in self._modules.values():
             yield module
@@ -45,3 +62,7 @@ class Module(ABC):
         for module in self.modules():
             yield from module.parameters()
         yield from self._parameters.values()
+
+    @property
+    def evaluate(self) -> ModuleMode:
+        return ModuleMode(self)

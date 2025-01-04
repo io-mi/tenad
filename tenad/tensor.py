@@ -389,11 +389,11 @@ class Tensor(metaclass=TensorMeta):
     @staticmethod
     def zeros(shape:Shape, use_grad:bool=True) -> Tensor:
         return Tensor(np.zeros(shape, Tensor.dtype), use_grad)
-    
+
     @staticmethod
     def ones(shape:Shape, use_grad:bool=True) -> Tensor:
         return Tensor(np.ones(shape, Tensor.dtype), use_grad)
-    
+
     @staticmethod
     def one_hot(classes:NDArray, num_classes:int=-1) -> Tensor:
         if num_classes < 1:
@@ -413,7 +413,7 @@ class Tensor(metaclass=TensorMeta):
     def __add__(self, other:Operand) -> Tensor:
         op = AddOp(self, other)
         return op.result
-    
+
     def __radd__(self, other:Operand) -> Tensor:
         op = AddOp(other, self)
         return op.result
@@ -449,11 +449,11 @@ class Tensor(metaclass=TensorMeta):
     def __matmul__(self, other:Operand) -> Tensor:
         op = MatMulOp(self, other)
         return op.result
-        
+
     def square(self) -> Tensor:
         op = SquareOp(self)
         return op.result
-    
+
     def log(self) -> Tensor:
         op = LogOp(self)
         return op.result
@@ -461,7 +461,7 @@ class Tensor(metaclass=TensorMeta):
     def exp(self) -> Tensor:
         op = ExpOp(self)
         return op.result
-    
+
     def sqrt(self) -> Tensor:
         op = SqrtOp(self)
         return op.result
@@ -469,7 +469,7 @@ class Tensor(metaclass=TensorMeta):
     def tanh(self) -> Tensor:
         op = TanhOp(self)
         return op.result
-    
+
     def sum(self, axes:Optional[Axes] = None, keepdims:bool = False) -> Tensor:
         op = SumOp(self, axes, keepdims)
         return op.result
